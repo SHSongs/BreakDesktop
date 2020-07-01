@@ -1,0 +1,10 @@
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\bin\Debug\BreakDesktopClient.exe.config
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\bin\Debug\BreakDesktopClient.exe
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\bin\Debug\BreakDesktopClient.pdb
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.csprojAssemblyReference.cache
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.Form1.resources
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.Properties.Resources.resources
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.csproj.GenerateResource.cache
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.csproj.CoreCompileInputs.cache
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.exe
+D:\Project\Cpppp\BreakDesktop\BreakDesktopClient\BreakDesktopClient\obj\Debug\BreakDesktopClient.pdb
