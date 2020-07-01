@@ -30,7 +30,7 @@ namespace BreakDesktopClient
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            Cursor.Current = Cursors.Arrow;
+            Cursor.Current = Cursors.Hand;
 
             textBox1.Text =  e.Location.X + ":" + e.Location.Y;
 
