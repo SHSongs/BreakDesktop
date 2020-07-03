@@ -50,20 +50,21 @@ namespace BreakDesktopClient
 
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-            Cursor.Current = Cursors.Hand;
-
-            textBox1.Text =  e.Location.X + ":" + e.Location.Y;
-
-            
-
-            label1.Location = new Point(e.Location.X, e.Location.Y);
-        }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            Cursor.Current = Cursors.Hand;
+
+            textBox1.Text = e.Location.X + ":" + e.Location.Y;
+
+
+
+            label1.Location = new Point(e.Location.X, e.Location.Y);
         }
     }
 }

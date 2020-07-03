@@ -74,11 +74,12 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(-3, -2);
+            this.pictureBox1.Location = new System.Drawing.Point(-1, -1);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1145, 822);
+            this.pictureBox1.Size = new System.Drawing.Size(1156, 823);
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
             // Form1
             // 
@@ -97,7 +98,6 @@
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
