@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,9 @@ namespace BreakDesktopClient
 {
     public partial class Form1 : Form
     {
+        MiniGun miniGun;
+        Point mousePoint;
+
         int count = 0;
 
         private void screen_capture()
@@ -39,7 +43,7 @@ namespace BreakDesktopClient
             screen_capture();
             pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             pictureBox1.SendToBack();
-
+            miniGun = new MiniGun(pictureBox1, ref mousePoint);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -60,6 +64,8 @@ namespace BreakDesktopClient
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            mousePoint = e.Location;
+
             Cursor.Current = Cursors.Hand;
 
             textBox1.Text = e.Location.X + ":" + e.Location.Y;
@@ -85,14 +91,14 @@ namespace BreakDesktopClient
                 picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 picture.Click += new_Click_Event;
-                pictureBox1.Controls.Add(picture);
+                //pictureBox1.Controls.Add(picture);
             }
         }
 
-        private void controlControl<T>(Control c , Point p, Size s) where T : Control
+        public void controlControl<T>(Control c , Point p, Size s) where T : Control
         {
             c.Size = s;
-            c.Name = String.Format("{0} img", count);
+            c.Name = String.Format("img");
             c.Location = p;
         }
 
@@ -105,12 +111,65 @@ namespace BreakDesktopClient
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-
+            miniGun.isFire = true;
+            Thread thread = new Thread(Fire);
+            thread.Start();
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-
+            miniGun.isFire = false;
         }
+
+
+        public void Fire()
+        {
+            while(miniGun.isFire)
+            {
+                PictureBox bullet = new PictureBox();
+
+                controlControl<PictureBox>(bullet, mousePoint, new Size(10, 10));
+
+                bullet.Image = miniGun.bulletBitmap;
+                bullet.SizeMode = PictureBoxSizeMode.StretchImage;
+
+
+                if (pictureBox1.InvokeRequired)
+                {
+                    pictureBox1.Invoke(new MethodInvoker(delegate ()
+                    {
+                        pictureBox1.Controls.Add(bullet);
+                    }));
+                }
+                else
+                {
+                    pictureBox1.Controls.Add(bullet);
+                }
+
+                Thread.Sleep(10);
+            }
+        }
+
+
+    }
+
+
+    class MiniGun
+    {
+        PictureBox pictureBox;
+        Point mousePoint;
+
+        public Bitmap bulletBitmap;
+
+        public bool isFire = false;
+        
+        public MiniGun(PictureBox pictureBox, ref Point mousePoint)
+        {
+            this.pictureBox = pictureBox;
+            this.mousePoint = mousePoint;
+
+            bulletBitmap = new Bitmap("item/stamp.PNG");
+        }
+        
     }
 }
