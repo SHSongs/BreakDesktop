@@ -39,6 +39,7 @@ namespace BreakDesktopClient
             screen_capture();
             pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             pictureBox1.SendToBack();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -70,20 +71,29 @@ namespace BreakDesktopClient
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            count++;
-            label1.Text = count.ToString();
 
-            PictureBox picture = new PictureBox();
+            if(e.Button == MouseButtons.Left)
+            {
+                count++;
+                label1.Text = count.ToString();
 
-            picture.Size = new Size(100, 100);
-            picture.ImageLocation = "item/stamp.PNG";
-            picture.SizeMode = PictureBoxSizeMode.StretchImage;
-            picture.Name = String.Format("{0} img", count);
-            picture.Location = e.Location;
-            picture.Click += new_Click_Event;
-            pictureBox1.Controls.Add(picture);
+                PictureBox picture = new PictureBox();
 
 
+                controlControl<PictureBox>(picture, e.Location, new Size(100,100));
+                picture.ImageLocation = "item/stamp.PNG";
+                picture.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                picture.Click += new_Click_Event;
+                pictureBox1.Controls.Add(picture);
+            }
+        }
+
+        private void controlControl<T>(Control c , Point p, Size s) where T : Control
+        {
+            c.Size = s;
+            c.Name = String.Format("{0} img", count);
+            c.Location = p;
         }
 
         private void new_Click_Event(object sender, EventArgs e)
@@ -93,5 +103,14 @@ namespace BreakDesktopClient
             MessageBox.Show(btn.Location.ToString());
         }
 
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
