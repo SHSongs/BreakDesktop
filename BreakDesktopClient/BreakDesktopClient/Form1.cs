@@ -73,19 +73,22 @@ namespace BreakDesktopClient
             count++;
             label1.Text = count.ToString();
 
-            Button btn = new Button();
-            btn.Text = String.Format("{0} btn", count);
-            btn.Text = String.Format("{0} btn", count);
-            btn.Location = e.Location;
+            PictureBox picture = new PictureBox();
 
-            btn.Click += new_button_Click;
-            btn.BringToFront();
-            pictureBox1.Controls.Add(btn);
+            picture.Size = new Size(100, 100);
+            picture.ImageLocation = "item/stamp.PNG";
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            picture.Name = String.Format("{0} img", count);
+            picture.Location = e.Location;
+            picture.Click += new_Click_Event;
+            pictureBox1.Controls.Add(picture);
+
+
         }
 
-        private void new_button_Click(object sender, EventArgs e)
+        private void new_Click_Event(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
+            PictureBox btn = (PictureBox)sender;
 
             MessageBox.Show(btn.Location.ToString());
         }
