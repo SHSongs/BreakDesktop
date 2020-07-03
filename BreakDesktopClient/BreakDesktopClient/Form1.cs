@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,19 @@ namespace BreakDesktopClient
         Point mousePoint;
 
         int count = 0;
+        public Form1()
+        {
+            InitializeComponent();
 
+            //전체화면 캡처와 픽처박스 사이즈 조절
+            screen_capture();
+            pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            pictureBox1.SendToBack();
+
+
+            miniGun = new MiniGun(pictureBox1, ref mousePoint);
+
+        }
         private void screen_capture()
         {
 
@@ -32,19 +45,13 @@ namespace BreakDesktopClient
             pictureBox1.ImageLocation = "x2.jpg"; // picture box에 보여줌
 
 
+            Cursor.Hide();
+            MouseCursor.ImageLocation = "curcor/minigun.png";
+            MouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
 
 
         }
-        public Form1()
-        {            
-            InitializeComponent();
-
-            //전체화면 캡처와 픽처박스 사이즈 조절
-            screen_capture();
-            pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            pictureBox1.SendToBack();
-            miniGun = new MiniGun(pictureBox1, ref mousePoint);
-        }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -66,13 +73,12 @@ namespace BreakDesktopClient
         {
             mousePoint = e.Location;
 
-            Cursor.Current = Cursors.Hand;
 
             textBox1.Text = e.Location.X + ":" + e.Location.Y;
 
 
 
-            label1.Location = new Point(e.Location.X, e.Location.Y);
+            MouseCursor.Location = e.Location;
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
@@ -91,7 +97,7 @@ namespace BreakDesktopClient
                 picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 picture.Click += new_Click_Event;
-                //pictureBox1.Controls.Add(picture);
+                pictureBox1.Controls.Add(picture);
             }
         }
 
@@ -124,11 +130,14 @@ namespace BreakDesktopClient
 
         public void Fire()
         {
-            while(miniGun.isFire)
+
+            miniGun.soundPlayer.Play();
+            while (miniGun.isFire)
             {
                 PictureBox bullet = new PictureBox();
 
-                controlControl<PictureBox>(bullet, mousePoint, new Size(10, 10));
+                Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
+                controlControl<PictureBox>(bullet, p, new Size(10, 10));
 
                 bullet.Image = miniGun.bulletBitmap;
                 bullet.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -139,6 +148,7 @@ namespace BreakDesktopClient
                     pictureBox1.Invoke(new MethodInvoker(delegate ()
                     {
                         pictureBox1.Controls.Add(bullet);
+                        
                     }));
                 }
                 else
@@ -146,8 +156,9 @@ namespace BreakDesktopClient
                     pictureBox1.Controls.Add(bullet);
                 }
                 miniGun.cnt++;
-                Thread.Sleep(10);
+                Thread.Sleep(20);
             }
+            miniGun.soundPlayer.Stop();
         }
 
 
@@ -156,6 +167,9 @@ namespace BreakDesktopClient
 
     class MiniGun
     {
+
+        public SoundPlayer soundPlayer;
+
         PictureBox pictureBox;
         Point mousePoint;
 
@@ -171,6 +185,8 @@ namespace BreakDesktopClient
             this.mousePoint = mousePoint;
 
             bulletBitmap = new Bitmap("item/stamp.PNG");
+            soundPlayer = new SoundPlayer();
+            soundPlayer.SoundLocation = "sound/m134.wav";
         }
         
     }
