@@ -145,7 +145,7 @@ namespace BreakDesktopClient
                 {
                     pictureBox1.Controls.Add(bullet);
                 }
-
+                miniGun.cnt++;
                 Thread.Sleep(10);
             }
         }
@@ -162,7 +162,9 @@ namespace BreakDesktopClient
         public Bitmap bulletBitmap;
 
         public bool isFire = false;
-        
+
+        public long cnt = 0;
+
         public MiniGun(PictureBox pictureBox, ref Point mousePoint)
         {
             this.pictureBox = pictureBox;

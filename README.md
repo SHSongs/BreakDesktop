@@ -12,3 +12,6 @@
 
 ![add btn](addbtn.PNG)  
 클릭시 그 위치에 버튼 생성
+
+![miniGun](minigun.PNG)    
+미니건 추가  (쓰레드 이용)
