@@ -9,3 +9,6 @@
 ### 7.3
 ![fullscreen capture](fullscreen.PNG)  
 전체화면 캡처
+
+![add btn](addbtn.PNG)  
+클릭시 그 위치에 버튼 생성

@@ -13,6 +13,7 @@ namespace BreakDesktopClient
 {
     public partial class Form1 : Form
     {
+        int count = 0;
 
         private void screen_capture()
         {
@@ -37,7 +38,7 @@ namespace BreakDesktopClient
             //전체화면 캡처와 픽처박스 사이즈 조절
             screen_capture();
             pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-
+            pictureBox1.SendToBack();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -66,5 +67,28 @@ namespace BreakDesktopClient
 
             label1.Location = new Point(e.Location.X, e.Location.Y);
         }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            count++;
+            label1.Text = count.ToString();
+
+            Button btn = new Button();
+            btn.Text = String.Format("{0} btn", count);
+            btn.Text = String.Format("{0} btn", count);
+            btn.Location = e.Location;
+
+            btn.Click += new_button_Click;
+            btn.BringToFront();
+            pictureBox1.Controls.Add(btn);
+        }
+
+        private void new_button_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            MessageBox.Show(btn.Location.ToString());
+        }
+
     }
 }
