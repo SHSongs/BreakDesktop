@@ -13,8 +13,17 @@ using System.Windows.Forms;
 
 namespace BreakDesktopClient
 {
+
+    enum Items_List
+    {
+        Stemp,
+        Minigun
+    }
     public partial class Form1 : Form
     {
+        ItemSelecter itemSelecter;
+        
+
         MiniGun miniGun;
         Point mousePoint;
 
@@ -23,18 +32,25 @@ namespace BreakDesktopClient
         {
             InitializeComponent();
 
+
+            Create();
+        }
+
+        private void Create()
+        {
             //전체화면 캡처와 픽처박스 사이즈 조절
             screen_capture();
             pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             pictureBox1.SendToBack();
 
 
-            miniGun = new MiniGun(pictureBox1, ref mousePoint);
+            miniGun = new MiniGun();
 
             DoubleBuffered = true;  // 이중버퍼
 
             this.KeyPreview = true;
 
+            itemSelecter = new ItemSelecter();
         }
 
 
@@ -72,21 +88,6 @@ namespace BreakDesktopClient
         }
         
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -112,20 +113,22 @@ namespace BreakDesktopClient
                 PictureBox picture = new PictureBox();
 
 
-                controlControl<PictureBox>(picture, e.Location, new Size(100,100));
-                picture.ImageLocation = "item/stamp.PNG";
-                picture.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureControl(picture, e.Location, new Size(100,100));
+
+
+                picture.Image = itemSelecter.getBitmap((int)Items_List.Stemp);
 
                 picture.Click += new_Click_Event;
                 pictureBox1.Controls.Add(picture);
             }
         }
 
-        public void controlControl<T>(Control c , Point p, Size s) where T : Control
+        public void pictureControl(PictureBox c , Point p, Size s) 
         {
             c.Size = s;
             c.Name = String.Format("img");
             c.Location = p;
+            c.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void new_Click_Event(object sender, EventArgs e)
@@ -157,9 +160,11 @@ namespace BreakDesktopClient
                 PictureBox bullet = new PictureBox();
 
                 Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
-                controlControl<PictureBox>(bullet, p, new Size(10, 10));
+                pictureControl(bullet, p, new Size(10, 10));
 
-                bullet.Image = miniGun.bulletBitmap;
+                bullet.Image = itemSelecter.getBitmap((int)Items_List.Minigun);
+
+
                 bullet.SizeMode = PictureBoxSizeMode.StretchImage;
                 bullet.BringToFront();
 
@@ -193,29 +198,56 @@ namespace BreakDesktopClient
         }
     }
 
-
-    class MiniGun
+    class ItemSelecter
     {
+        Items_List items_List;
 
+        public int select;
+        public List<Item> items;
+
+        public ItemSelecter()
+        {
+            items = new List<Item>();
+
+
+            items.Add(new Item("item/stamp.PNG", ""));
+            items.Add(new MiniGun());
+        }
+
+        public Bitmap getBitmap(int i)
+        {
+            return items[i].bitmap;
+        }
+    }
+
+    class Item
+    {
         public SoundPlayer soundPlayer;
 
-        PictureBox pictureBox;
-        Point mousePoint;
+        public Bitmap bitmap;
 
-        public Bitmap bulletBitmap;
-
-        public bool isFire = false;
 
         public long cnt = 0;
 
-        public MiniGun(PictureBox pictureBox, ref Point mousePoint)
+        public Item(String image, String sound)
         {
-            this.pictureBox = pictureBox;
-            this.mousePoint = mousePoint;
-
-            bulletBitmap = new Bitmap("item/stamp.PNG");
+            bitmap = new Bitmap(image);
             soundPlayer = new SoundPlayer();
-            soundPlayer.SoundLocation = "sound/m134.wav";
+            soundPlayer.SoundLocation = sound;
+        }
+
+       
+    }
+
+    class MiniGun : Item
+    {
+
+
+        public bool isFire = false;
+
+        public MiniGun() : base("item/stamp.PNG", "sound/m134.wav")
+        {
+       
         }
         
     }
