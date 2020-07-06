@@ -33,6 +33,8 @@ namespace BreakDesktopClient
 
             DoubleBuffered = true;  // 이중버퍼
 
+            this.KeyPreview = true;
+
         }
 
 
@@ -92,7 +94,6 @@ namespace BreakDesktopClient
 
 
             textBox1.Text = e.Location.X + ":" + e.Location.Y;
-
 
 
             MouseCursor.Location = e.Location;
@@ -160,7 +161,7 @@ namespace BreakDesktopClient
 
                 bullet.Image = miniGun.bulletBitmap;
                 bullet.SizeMode = PictureBoxSizeMode.StretchImage;
-
+                bullet.BringToFront();
 
                 if (pictureBox1.InvokeRequired)
                 {
@@ -180,7 +181,16 @@ namespace BreakDesktopClient
             miniGun.soundPlayer.Stop();
         }
 
+ 
 
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A)
+            {
+                MessageBox.Show("A");
+            }
+
+        }
     }
 
 
