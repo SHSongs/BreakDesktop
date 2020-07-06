@@ -31,7 +31,24 @@ namespace BreakDesktopClient
 
             miniGun = new MiniGun(pictureBox1, ref mousePoint);
 
+            DoubleBuffered = true;  // 이중버퍼
+
         }
+
+
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000; // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
+
+
         private void screen_capture()
         {
 
@@ -79,6 +96,8 @@ namespace BreakDesktopClient
 
 
             MouseCursor.Location = e.Location;
+
+
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
