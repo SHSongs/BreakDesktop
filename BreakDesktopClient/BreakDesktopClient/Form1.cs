@@ -105,22 +105,7 @@ namespace BreakDesktopClient
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
 
-            if(e.Button == MouseButtons.Left)
-            {
-                count++;
-                label1.Text = count.ToString();
-
-                PictureBox picture = new PictureBox();
-
-
-                pictureControl(picture, e.Location, new Size(100,100));
-
-
-                picture.Image = itemSelecter.getBitmap((int)Items_List.Stemp);
-
-                picture.Click += new_Click_Event;
-                pictureBox1.Controls.Add(picture);
-            }
+      
         }
 
         public void pictureControl(PictureBox c , Point p, Size s) 
@@ -140,9 +125,35 @@ namespace BreakDesktopClient
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            miniGun.isFire = true;
-            Thread thread = new Thread(Fire);
-            thread.Start();
+            if (itemSelecter.select == (int)Items_List.Stemp)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    count++;
+                    label1.Text = count.ToString();
+
+                    PictureBox picture = new PictureBox();
+
+
+                    pictureControl(picture, e.Location, new Size(100, 100));
+
+
+                    picture.Image = itemSelecter.getBitmap((int)Items_List.Stemp);
+
+                    picture.Click += new_Click_Event;
+                    pictureBox1.Controls.Add(picture);
+                }
+            }
+            else if (itemSelecter.select == (int)Items_List.Minigun)
+            {
+
+                miniGun.isFire = true;
+                Thread thread = new Thread(Fire);
+                thread.Start();
+            }
+
+
+           
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -190,9 +201,14 @@ namespace BreakDesktopClient
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.A)
+            if (e.KeyCode == Keys.D1)
             {
-                MessageBox.Show("A");
+                itemSelecter.select = (int)Items_List.Stemp;
+            }
+            else if(e.KeyCode == Keys.D2)
+            {
+
+                itemSelecter.select = (int)Items_List.Minigun;
             }
 
         }
@@ -202,7 +218,7 @@ namespace BreakDesktopClient
     {
         Items_List items_List;
 
-        public int select;
+        public int select = 0;
         public List<Item> items;
 
         public ItemSelecter()
