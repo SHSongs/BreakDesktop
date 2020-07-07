@@ -22,9 +22,8 @@ namespace BreakDesktopClient
     public partial class Form1 : Form
     {
         ItemSelecter itemSelecter;
-        
 
-        MiniGun miniGun;
+
         Point mousePoint;
 
         int count = 0;
@@ -44,7 +43,6 @@ namespace BreakDesktopClient
             pictureBox1.SendToBack();
 
 
-            miniGun = new MiniGun();
 
             DoubleBuffered = true;  // 이중버퍼
 
@@ -86,7 +84,7 @@ namespace BreakDesktopClient
 
 
         }
-        
+
 
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -98,17 +96,15 @@ namespace BreakDesktopClient
 
 
             MouseCursor.Location = e.Location;
-
-
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
 
-      
+
         }
 
-        public void pictureControl(PictureBox c , Point p, Size s) 
+        public void pictureControl(PictureBox c, Point p, Size s)
         {
             c.Size = s;
             c.Name = String.Format("img");
@@ -125,6 +121,9 @@ namespace BreakDesktopClient
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            Item item = itemSelecter.items[itemSelecter.select];
+            item.operate();
+
             if (itemSelecter.select == (int)Items_List.Stemp)
             {
                 if (e.Button == MouseButtons.Left)
@@ -146,28 +145,49 @@ namespace BreakDesktopClient
             }
             else if (itemSelecter.select == (int)Items_List.Minigun)
             {
+                (item as MiniGun).isFire = true;
 
-                miniGun.isFire = true;
                 Thread thread = new Thread(Fire);
                 thread.Start();
             }
 
 
-           
+
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            miniGun.isFire = false;
+            Item item = itemSelecter.items[itemSelecter.select];
+
+
+            try
+            {
+                (item as MiniGun).isFire = false;
+          
+            }
+            catch (Exception)
+            {
+
+            }
+
+            if (itemSelecter.select == (int)Items_List.Stemp)
+            {
+
+            }
+            else if (itemSelecter.select == (int)Items_List.Minigun)
+            {
+            }
         }
 
 
         public void Fire()
         {
+            MiniGun m = (MiniGun)itemSelecter.getItem(Items_List.Minigun);
 
-            miniGun.soundPlayer.Play();
-            while (miniGun.isFire)
+            m.soundPlayer.Play();
+            while (m.isFire)
             {
+                m.operate();
                 PictureBox bullet = new PictureBox();
 
                 Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
@@ -184,20 +204,19 @@ namespace BreakDesktopClient
                     pictureBox1.Invoke(new MethodInvoker(delegate ()
                     {
                         pictureBox1.Controls.Add(bullet);
-                        
+
                     }));
                 }
                 else
                 {
                     pictureBox1.Controls.Add(bullet);
                 }
-                miniGun.cnt++;
                 Thread.Sleep(20);
             }
-            miniGun.soundPlayer.Stop();
+            m.soundPlayer.Stop();
         }
 
- 
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -205,7 +224,7 @@ namespace BreakDesktopClient
             {
                 itemSelecter.select = (int)Items_List.Stemp;
             }
-            else if(e.KeyCode == Keys.D2)
+            else if (e.KeyCode == Keys.D2)
             {
 
                 itemSelecter.select = (int)Items_List.Minigun;
@@ -216,7 +235,6 @@ namespace BreakDesktopClient
 
     class ItemSelecter
     {
-        Items_List items_List;
 
         public int select = 0;
         public List<Item> items;
@@ -233,6 +251,11 @@ namespace BreakDesktopClient
         public Bitmap getBitmap(int i)
         {
             return items[i].bitmap;
+        }
+
+        public Item getItem(Items_List i)
+        {
+            return items[(int)i];
         }
     }
 
@@ -252,7 +275,11 @@ namespace BreakDesktopClient
             soundPlayer.SoundLocation = sound;
         }
 
-       
+        public void operate()
+        {
+            cnt++;
+        }
+
     }
 
     class MiniGun : Item
@@ -263,8 +290,9 @@ namespace BreakDesktopClient
 
         public MiniGun() : base("item/stamp.PNG", "sound/m134.wav")
         {
-       
+
         }
-        
+
+      
     }
 }
