@@ -104,7 +104,7 @@ namespace BreakDesktopClient
 
         }
 
-        public void pictureControl(PictureBox c, Point p, Size s)
+        public static void pictureControl(PictureBox c, Point p, Size s)
         {
             c.Size = s;
             c.Name = String.Format("img");
@@ -114,15 +114,14 @@ namespace BreakDesktopClient
 
         private void new_Click_Event(object sender, EventArgs e)
         {
-            PictureBox btn = (PictureBox)sender;
 
-            MessageBox.Show(btn.Location.ToString());
+            MessageBox.Show("불가능합니다");
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             Item item = itemSelecter.items[itemSelecter.select];
-            item.operate();
+            item.operate(mousePoint);
 
             if (itemSelecter.select == (int)Items_List.Stemp)
             {
@@ -187,17 +186,8 @@ namespace BreakDesktopClient
             m.soundPlayer.Play();
             while (m.isFire)
             {
-                m.operate();
-                PictureBox bullet = new PictureBox();
-
-                Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
-                pictureControl(bullet, p, new Size(10, 10));
-
-                bullet.Image = itemSelecter.getBitmap((int)Items_List.Minigun);
-
-
-                bullet.SizeMode = PictureBoxSizeMode.StretchImage;
-                bullet.BringToFront();
+                PictureBox bullet = m.operate(mousePoint);
+               
 
                 if (pictureBox1.InvokeRequired)
                 {
@@ -275,9 +265,11 @@ namespace BreakDesktopClient
             soundPlayer.SoundLocation = sound;
         }
 
-        public void operate()
+        virtual public PictureBox operate(Point mousePoint)
         {
             cnt++;
+
+            return null;
         }
 
     }
@@ -293,6 +285,24 @@ namespace BreakDesktopClient
 
         }
 
-      
+        override public PictureBox operate(Point mousePoint)
+        {
+            cnt++;
+
+            PictureBox bullet = new PictureBox();
+
+            Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
+            Form1.pictureControl(bullet, p, new Size(10, 10));
+
+            bullet.Image = bitmap;
+
+
+            bullet.SizeMode = PictureBoxSizeMode.StretchImage;
+            bullet.BringToFront();
+
+            return bullet;
+        }
+
+
     }
 }
