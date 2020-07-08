@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -22,6 +23,13 @@ namespace BreakDesktopClient
     }
     public partial class Form1 : Form
     {
+
+        private SqlConnection sqlconn = null;
+        private string constr = "SERVER = 127.0.0.1,1433; DATABASE = mydb2;" +
+            "UID = sa; PASSWORD = 0000";
+
+        
+
         ItemSelecter itemSelecter;
 
         PictureBox ladder;
@@ -39,6 +47,18 @@ namespace BreakDesktopClient
 
         private void Create()
         {
+
+            try
+            {
+                sqlconn = new SqlConnection(constr);
+                sqlconn.Open();
+
+            }
+           catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
             //전체화면 캡처와 픽처박스 사이즈 조절
             screen_capture();
             pictureBox1.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
