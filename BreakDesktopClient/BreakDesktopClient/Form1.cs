@@ -17,12 +17,14 @@ namespace BreakDesktopClient
     enum Items_List
     {
         Stemp,
-        Minigun
+        Minigun,
+        Ladder
     }
     public partial class Form1 : Form
     {
         ItemSelecter itemSelecter;
 
+        PictureBox ladder;
 
         Point mousePoint;
 
@@ -49,6 +51,11 @@ namespace BreakDesktopClient
             this.KeyPreview = true;
 
             itemSelecter = new ItemSelecter();
+
+            ladder = new PictureBox();
+            ladder.ImageLocation = "curcor/ladder.png";
+            ladder.Size = new Size(100, 1000);
+            ladder.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
 
@@ -96,6 +103,11 @@ namespace BreakDesktopClient
 
 
             MouseCursor.Location = e.Location;
+
+            if(itemSelecter.select == (int)Items_List.Ladder)
+            {
+                ladder.Location = new Point(e.Location.X, ladder.Location.Y);
+            }
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
@@ -212,12 +224,21 @@ namespace BreakDesktopClient
         {
             if (e.KeyCode == Keys.D1)
             {
+                MouseCursor.ImageLocation = "curcor/minigun.png";
                 itemSelecter.select = (int)Items_List.Stemp;
             }
             else if (e.KeyCode == Keys.D2)
             {
 
                 itemSelecter.select = (int)Items_List.Minigun;
+            }
+            else if (e.KeyCode == Keys.D3)
+            {
+
+                MouseCursor.ImageLocation = "curcor/ladder.png";
+
+                itemSelecter.select = (int)Items_List.Ladder;
+                pictureBox1.Controls.Add(ladder);
             }
 
         }
@@ -236,6 +257,7 @@ namespace BreakDesktopClient
 
             items.Add(new Item("item/stamp.PNG", ""));
             items.Add(new MiniGun());
+            items.Add(new Item("item/stamp.PNG", ""));
         }
 
         public Bitmap getBitmap(int i)
@@ -280,7 +302,7 @@ namespace BreakDesktopClient
 
         public bool isFire = false;
 
-        public MiniGun() : base("item/stamp.PNG", "sound/m134.wav")
+        public MiniGun() : base("item/bullet.PNG", "sound/m134.wav")
         {
 
         }
