@@ -235,7 +235,7 @@ namespace BreakDesktopClient
             else if (e.KeyCode == Keys.D3)
             {
 
-                MouseCursor.ImageLocation = "curcor/ladder.png";
+                MouseCursor.ImageLocation = "curcor/human.jpg";
 
                 itemSelecter.select = (int)Items_List.Ladder;
                 pictureBox1.Controls.Add(ladder);
