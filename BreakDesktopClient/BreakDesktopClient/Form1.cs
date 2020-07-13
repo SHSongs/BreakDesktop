@@ -14,7 +14,23 @@ using System.Windows.Forms;
 
 namespace BreakDesktopClient
 {
+    class XY
+    {
+        public int x
+        {
+            get;set;
+        }
+        public int y
+        {
+            get;set;
+        }
+        public XY(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
 
+    }
     enum Items_List
     {
         Stemp,
@@ -148,7 +164,7 @@ namespace BreakDesktopClient
         private void new_Click_Event(object sender, EventArgs e)
         {
 
-            MessageBox.Show("불가능합니다");
+            MessageBox.Show("불가능합니다 \n Developed by SHsongs, seojin");
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -194,7 +210,8 @@ namespace BreakDesktopClient
 
             try
             {
-                (item as MiniGun).isFire = false;
+                if (item is MiniGun)
+                    (item as MiniGun).isFire = false;
           
             }
             catch (Exception)
@@ -261,7 +278,28 @@ namespace BreakDesktopClient
                 itemSelecter.select = (int)Items_List.Ladder;
                 pictureBox1.Controls.Add(ladder);
             }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                MessageBox.Show("저장이 끝나면 자동으로 종료됩니다 \n Developed by SHsongs, seojin");
 
+                SaveData();
+            }
+
+        }
+
+        private void SaveData()
+        {
+            foreach(Item item in itemSelecter.items)
+            {
+                long cnt = item.cnt;
+
+                foreach(XY xy in item.XYuseitem)
+                {
+
+                }
+            }
+
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 
@@ -299,18 +337,24 @@ namespace BreakDesktopClient
         public Bitmap bitmap;
 
 
-        public long cnt = 0;
+        public List<XY> XYuseitem;  
 
+
+        public long cnt = 0;
         public Item(String image, String sound)
         {
             bitmap = new Bitmap(image);
             soundPlayer = new SoundPlayer();
             soundPlayer.SoundLocation = sound;
+
+            XYuseitem = new List<XY>();
         }
 
         virtual public PictureBox operate(Point mousePoint)
         {
             cnt++;
+
+            XYuseitem.Add(new XY(mousePoint.X, mousePoint.Y));
 
             return null;
         }
@@ -320,17 +364,15 @@ namespace BreakDesktopClient
     class MiniGun : Item
     {
 
-
         public bool isFire = false;
 
         public MiniGun() : base("item/bullet.PNG", "sound/m134.wav")
         {
-
         }
 
         override public PictureBox operate(Point mousePoint)
         {
-            cnt++;
+            base.operate(new Point(mousePoint.X + 150, mousePoint.Y - 150));
 
             PictureBox bullet = new PictureBox();
 
