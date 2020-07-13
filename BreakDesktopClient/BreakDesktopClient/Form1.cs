@@ -14,15 +14,21 @@ using System.Windows.Forms;
 
 namespace BreakDesktopClient
 {
+
+    class Item_id
+    {
+
+    }
+
     class XY
     {
         public int x
         {
-            get;set;
+            get; set;
         }
         public int y
         {
-            get;set;
+            get; set;
         }
         public XY(int x, int y)
         {
@@ -93,6 +99,7 @@ namespace BreakDesktopClient
             ladder.ImageLocation = "curcor/ladder.png";
             ladder.Size = new Size(100, 1000);
             ladder.SizeMode = PictureBoxSizeMode.StretchImage;
+            
         }
 
 
@@ -141,7 +148,7 @@ namespace BreakDesktopClient
 
             MouseCursor.Location = e.Location;
 
-            if(itemSelecter.select == (int)Items_List.Ladder)
+            if (itemSelecter.select == (int)Items_List.Ladder)
             {
                 ladder.Location = new Point(e.Location.X, ladder.Location.Y);
             }
@@ -212,7 +219,7 @@ namespace BreakDesktopClient
             {
                 if (item is MiniGun)
                     (item as MiniGun).isFire = false;
-          
+
             }
             catch (Exception)
             {
@@ -237,7 +244,7 @@ namespace BreakDesktopClient
             while (m.isFire)
             {
                 PictureBox bullet = m.operate(mousePoint);
-               
+
 
                 if (pictureBox1.InvokeRequired)
                 {
@@ -289,105 +296,127 @@ namespace BreakDesktopClient
 
         private void SaveData()
         {
-            foreach(Item item in itemSelecter.items)
+
+
+            using (SqlConnection conn = new SqlConnection(constr))
             {
-                long cnt = item.cnt;
+                conn.Open();
 
-                foreach(XY xy in item.XYuseitem)
+                foreach (Item item in itemSelecter.items)
                 {
+                    long cnt = item.cnt;
 
+                    foreach (XY xy in item.XYuseitem)
+                    {
+                        
+
+                        SqlCommand command = new SqlCommand();
+
+                        command.Connection = conn;
+                        command.CommandText = String.Format("INSERT INTO Log(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
+
+                    }
                 }
+
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+        }
+
+        class ItemSelecter
+        {
+
+            public int select = 0;
+            public List<Item> items;
+
+            public ItemSelecter()
+            {
+                items = new List<Item>();
+
+
+                items.Add(new Item("item/stamp.PNG", "",0));
+                items.Add(new MiniGun());
+                items.Add(new Item("item/stamp.PNG", "",3));
             }
 
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            public Bitmap getBitmap(int i)
+            {
+                return items[i].bitmap;
+            }
+
+            public Item getItem(Items_List i)
+            {
+                return items[(int)i];
+            }
         }
-    }
 
-    class ItemSelecter
-    {
-
-        public int select = 0;
-        public List<Item> items;
-
-        public ItemSelecter()
+        class Item
         {
-            items = new List<Item>();
+            public SoundPlayer soundPlayer;
+
+            public Bitmap bitmap;
 
 
-            items.Add(new Item("item/stamp.PNG", ""));
-            items.Add(new MiniGun());
-            items.Add(new Item("item/stamp.PNG", ""));
+            public List<XY> XYuseitem;
+            public int id;
+
+            public long cnt = 0;
+            public Item(String image, String sound,int id)
+            {
+                bitmap = new Bitmap(image);
+                soundPlayer = new SoundPlayer();
+                soundPlayer.SoundLocation = sound;
+                this.id = id;
+                XYuseitem = new List<XY>();
+            }
+
+            virtual public PictureBox operate(Point mousePoint)
+            {
+                cnt++;
+
+                XYuseitem.Add(new XY(mousePoint.X, mousePoint.Y));
+
+                return null;
+            }
+
         }
 
-        public Bitmap getBitmap(int i)
+        class MiniGun : Item
         {
-            return items[i].bitmap;
+
+            public bool isFire = false;
+
+            public MiniGun() : base("item/bullet.PNG", "sound/m134.wav",1)
+            {
+            }
+
+            override public PictureBox operate(Point mousePoint)
+            {
+                base.operate(new Point(mousePoint.X + 150, mousePoint.Y - 150));
+
+                PictureBox bullet = new PictureBox();
+
+                Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
+                Form1.pictureControl(bullet, p, new Size(10, 10));
+
+                bullet.Image = bitmap;
+
+
+                bullet.SizeMode = PictureBoxSizeMode.StretchImage;
+                bullet.BringToFront();
+
+                return bullet;
+            }
+
+
         }
-
-        public Item getItem(Items_List i)
-        {
-            return items[(int)i];
-        }
-    }
-
-    class Item
-    {
-        public SoundPlayer soundPlayer;
-
-        public Bitmap bitmap;
-
-
-        public List<XY> XYuseitem;  
-
-
-        public long cnt = 0;
-        public Item(String image, String sound)
-        {
-            bitmap = new Bitmap(image);
-            soundPlayer = new SoundPlayer();
-            soundPlayer.SoundLocation = sound;
-
-            XYuseitem = new List<XY>();
-        }
-
-        virtual public PictureBox operate(Point mousePoint)
-        {
-            cnt++;
-
-            XYuseitem.Add(new XY(mousePoint.X, mousePoint.Y));
-
-            return null;
-        }
-
-    }
-
-    class MiniGun : Item
-    {
-
-        public bool isFire = false;
-
-        public MiniGun() : base("item/bullet.PNG", "sound/m134.wav")
-        {
-        }
-
-        override public PictureBox operate(Point mousePoint)
-        {
-            base.operate(new Point(mousePoint.X + 150, mousePoint.Y - 150));
-
-            PictureBox bullet = new PictureBox();
-
-            Point p = new Point(mousePoint.X + 150, mousePoint.Y - 150);
-            Form1.pictureControl(bullet, p, new Size(10, 10));
-
-            bullet.Image = bitmap;
-
-
-            bullet.SizeMode = PictureBoxSizeMode.StretchImage;
-            bullet.BringToFront();
-
-            return bullet;
-        }
-
-
     }
 }
