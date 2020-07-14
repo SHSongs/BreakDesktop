@@ -99,6 +99,9 @@ namespace BreakDesktopClient
             ladder.ImageLocation = "curcor/ladder.png";
             ladder.Size = new Size(100, 1000);
             ladder.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            login login = new login();
+            login.ShowDialog();
             
         }
 
