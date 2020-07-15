@@ -134,7 +134,7 @@ namespace BreakDesktopClient
             pictureBox1.ImageLocation = "x2.jpg"; // picture box에 보여줌
 
 
-            Cursor.Hide();
+            
             MouseCursor.ImageLocation = "curcor/minigun.png";
             MouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
 
@@ -318,7 +318,7 @@ namespace BreakDesktopClient
                         SqlCommand command = new SqlCommand();
 
                         command.Connection = conn;
-                        command.CommandText = String.Format("INSERT INTO Log(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
+                        command.CommandText = String.Format("INSERT INTO Logs(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
                         try
                         {
                             command.ExecuteNonQuery();
