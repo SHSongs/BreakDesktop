@@ -47,8 +47,8 @@ namespace BreakDesktopClient
     {
 
         private SqlConnection sqlconn = null;
-        private string constr = "SERVER = 127.0.0.1,1433; DATABASE = mydb2;" +
-            "UID = sa; PASSWORD = 0000";
+        private string constr = "SERVER= 127.0.0.1,6975; DATABASE=game;" + "UID=sa2; PASSWORD=5142";
+
 
 
 
@@ -318,7 +318,7 @@ namespace BreakDesktopClient
                         SqlCommand command = new SqlCommand();
 
                         command.Connection = conn;
-                        command.CommandText = String.Format("INSERT INTO Logs(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
+                        command.CommandText = String.Format("INSERT INTO Logs2(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
                         try
                         {
                             command.ExecuteNonQuery();
