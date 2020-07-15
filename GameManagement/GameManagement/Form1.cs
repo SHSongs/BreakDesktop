@@ -67,7 +67,6 @@ namespace GameManagement
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.Fill(ds, "Users");
             }
-
             dataGridView1.DataSource = ds.Tables[0];
 
 
@@ -83,7 +82,7 @@ namespace GameManagement
 
         private void button4_Click(object sender, EventArgs e)
         {
-            String bookno = textBox1.Text;
+            String id = textBox1.Text;
 
 
             using (SqlConnection conn = new SqlConnection(constr))
@@ -93,13 +92,13 @@ namespace GameManagement
                 SqlCommand command = new SqlCommand();
 
                 command.Connection = conn;
-                command.CommandText = "DELETE FROM BOOKS WHERE USER_ID = " + bookno;
+                command.CommandText = "DELETE FROM Users WHERE USER_ID =" +"'" +id+"'"; 
                 command.ExecuteNonQuery();
             }
 
             DataSet ds = new DataSet();
 
-            button2_Click(null, null);
+            button1_Click(null, null);
         }
     }
 }
