@@ -63,24 +63,28 @@ namespace BreakDesktopClient
 
                 SqlCommand command = new SqlCommand();
 
-                if (id == "" || pass=="" || name=="")
+                if (id == "" || pass == "" || name == "")
                 {
                     MessageBox.Show("모든 정보를 입력해주세요");
                 }
-                else {
+                else
+                {
+
                     try
                     {
                         command.Connection = conn;
-                        command.CommandText = String.Format("INSERT INTO Users(USER_ID,NAME,PASSWORD) VALUES('{0}','{1}',{2})", id, name, pass);
+                        command.CommandText = String.Format("INSERT INTO Users(USER_ID,NAME,PASSWORD) VALUES('{0}','{1}','{2}');", id, name, pass);
                         command.ExecuteNonQuery();
-                        //Join_Click(null, null);
+
                     }
                     catch
                     {
-                       
+                        MessageBox.Show("회원가입 되었습니다");
                     }
+
                 }
             }
+
 
         }
 
