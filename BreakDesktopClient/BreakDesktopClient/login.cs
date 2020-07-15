@@ -73,7 +73,7 @@ namespace BreakDesktopClient
                         command.Connection = conn;
                         command.CommandText = String.Format("INSERT INTO Users(USER_ID,NAME,PASSWORD) VALUES('{0}','{1}',{2})", id, name, pass);
                         command.ExecuteNonQuery();
-                        Join_Click(null, null);
+                        //Join_Click(null, null);
                     }
                     catch
                     {

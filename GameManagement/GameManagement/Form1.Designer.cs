@@ -68,6 +68,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "커스텀";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // dataGridView1
             // 
@@ -113,11 +114,11 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(671, 346);
+            this.button5.Location = new System.Drawing.Point(655, 278);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 8;
-            this.button5.Text = "button5";
+            this.button5.Text = "유저로그";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 

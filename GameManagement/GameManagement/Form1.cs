@@ -101,7 +101,7 @@ namespace GameManagement
         }
 
         private void button5_Click(object sender, EventArgs e)
-        {
+        {  
             String id = textBox1.Text;
 
 
@@ -118,6 +118,22 @@ namespace GameManagement
 
             dataGridView1.DataSource = ds.Tables[0];
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DataSet ds = new DataSet();
+
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                conn.Open();
+
+                string sql = "SELECT * FROM Items";
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+                adapter.Fill(ds, "Logs");
+            }
+
+            dataGridView1.DataSource = ds.Tables[0];
         }
     }
 }
