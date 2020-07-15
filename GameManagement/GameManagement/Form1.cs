@@ -77,7 +77,6 @@ namespace GameManagement
             textBox1.Text = dataGridView1.Rows[e.RowIndex].Cells["USER_ID"].Value.ToString();
             textBox2.Text = dataGridView1.Rows[e.RowIndex].Cells["NAME"].Value.ToString();
             textBox3.Text = dataGridView1.Rows[e.RowIndex].Cells["PASSWORD"].Value.ToString();
-
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -99,6 +98,26 @@ namespace GameManagement
             DataSet ds = new DataSet();
 
             button1_Click(null, null);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            String id = textBox1.Text;
+
+
+            DataSet ds = new DataSet();
+
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                conn.Open();
+
+                string sql = "select I.NAME,COUNT(*) from Logs L LEFT OUTER JOIN Users U ON L.USER_ID = U.USER_ID LEFT OUTER JOIN Items I ON L.ITEM_ID = I.ITEM_ID WHERE L.USER_ID = '0' GROUP BY I.NAME";
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+                adapter.Fill(ds, "Logs");
+            }
+
+            dataGridView1.DataSource = ds.Tables[0];
+
         }
     }
 }

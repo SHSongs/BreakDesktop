@@ -324,7 +324,6 @@ namespace BreakDesktopClient
                             command.ExecuteNonQuery();
                         }
                         catch(Exception e)
-                        
                         {
                             Console.WriteLine(e);
                         }
