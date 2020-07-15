@@ -102,6 +102,8 @@ namespace BreakDesktopClient
 
             login login = new login();
             login.ShowDialog();
+
+           
             
         }
 
