@@ -318,12 +318,13 @@ namespace BreakDesktopClient
                         SqlCommand command = new SqlCommand();
 
                         command.Connection = conn;
-                        command.CommandText = String.Format("INSERT INTO Logs2(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
+                        command.CommandText = String.Format("INSERT INTO Logs(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
                         try
                         {
                             command.ExecuteNonQuery();
                         }
                         catch(Exception e)
+                        
                         {
                             Console.WriteLine(e);
                         }
@@ -348,7 +349,7 @@ namespace BreakDesktopClient
 
 
                 items.Add(new Item("item/stamp.PNG", "",0));
-                items.Add(new MiniGun());
+                items.Add(new MiniGun()); 
                 items.Add(new Item("item/stamp.PNG", "",3));
             }
 
