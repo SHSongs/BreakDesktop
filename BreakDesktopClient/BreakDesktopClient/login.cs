@@ -13,6 +13,7 @@ namespace BreakDesktopClient
 {
     public partial class login : Form
     {
+        public string user_id;
 
         private SqlConnection sqlconn = null;
         private string constr = "SERVER= 127.0.0.1,6975; DATABASE=game;" + "UID=sa2; PASSWORD=5142";
@@ -122,6 +123,7 @@ namespace BreakDesktopClient
 
                         if (Pwd == pass)
                         {
+                            user_id = pass;
                             MessageBox.Show("로그인성공");
                             this.Close();
                         }

@@ -111,7 +111,7 @@ namespace GameManagement
             {
                 conn.Open();
 
-                string sql = "select I.NAME,COUNT(*) from Logs L LEFT OUTER JOIN Users U ON L.USER_ID = U.USER_ID LEFT OUTER JOIN Items I ON L.ITEM_ID = I.ITEM_ID WHERE L.USER_ID = '0' GROUP BY I.NAME";
+                string sql = "select I.NAME,COUNT(*) from Logs L LEFT OUTER JOIN Users U ON L.USER_ID = U.USER_ID LEFT OUTER JOIN Items I ON L.ITEM_ID = I.ITEM_ID WHERE L.USER_ID = "+"'"+id+"'"+" GROUP BY I.NAME";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.Fill(ds, "Logs");
             }

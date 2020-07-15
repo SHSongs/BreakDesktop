@@ -103,11 +103,11 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(671, 294);
+            this.button4.Location = new System.Drawing.Point(65, 415);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(119, 23);
             this.button4.TabIndex = 7;
-            this.button4.Text = "button4";
+            this.button4.Text = "삭제(주의)";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
