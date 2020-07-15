@@ -46,9 +46,6 @@ namespace BreakDesktopClient
     public partial class Form1 : Form
     {
 
-        private SqlConnection sqlconn = null;
-        private string constr = "SERVER = 127.0.0.1,1433; DATABASE = mydb2;" +
-            "UID = sa; PASSWORD = 0000";
 
 
 
@@ -72,8 +69,7 @@ namespace BreakDesktopClient
 
             try
             {
-                sqlconn = new SqlConnection(constr);
-                sqlconn.Open();
+            
 
             }
             catch (Exception ex)
@@ -99,9 +95,6 @@ namespace BreakDesktopClient
             ladder.ImageLocation = "curcor/ladder.png";
             ladder.Size = new Size(100, 1000);
             ladder.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            login login = new login();
-            login.ShowDialog();
 
            
             
@@ -303,9 +296,7 @@ namespace BreakDesktopClient
         {
 
 
-            using (SqlConnection conn = new SqlConnection(constr))
-            {
-                conn.Open();
+           
 
                 foreach (Item item in itemSelecter.items)
                 {
@@ -315,25 +306,13 @@ namespace BreakDesktopClient
                     {
                         
 
-                        SqlCommand command = new SqlCommand();
-
-                        command.Connection = conn;
-                        command.CommandText = String.Format("INSERT INTO Log(USER_ID,ITEM_ID,LOCATION_X,LOCATION_Y) VALUES('{0}','{1}','{2}','{3}');",0 ,item.id, xy.x, xy.y);
-                        try
-                        {
-                            command.ExecuteNonQuery();
-                        }
-                        catch(Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
-
+         
 
                     }
                 }
 
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
-            }
+            
         }
 
         class ItemSelecter
