@@ -79,7 +79,11 @@ namespace BreakDesktopClient
                     }
                     catch
                     {
+                    }
+                    finally
+                    {
                         MessageBox.Show("회원가입 되었습니다");
+
                     }
 
                 }

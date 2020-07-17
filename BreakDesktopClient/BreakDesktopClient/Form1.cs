@@ -50,7 +50,7 @@ namespace BreakDesktopClient
         private SqlConnection sqlconn = null;
         private string constr = "SERVER= 127.0.0.1,6975; DATABASE=game;" + "UID=sa2; PASSWORD=5142";
 
-
+        List<string> cursorimgpath = new List<string>();
 
 
         ItemSelecter itemSelecter;
@@ -105,8 +105,32 @@ namespace BreakDesktopClient
             login.ShowDialog();
 
             user_id = login.user_id;
-           
-            
+
+
+            for(int i = 0; i < (int)Items_List.Ladder + 1; i++)
+            {
+                using (SqlConnection conn = new SqlConnection(constr))
+                {
+
+                    conn.Open();
+
+                    string query = " select IMAGE from Items where ITEM_ID =" + i;
+                    SqlDataAdapter sda = new SqlDataAdapter(query, conn);
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    cmd.Connection = conn;
+
+                    object scalarValue = cmd.ExecuteScalar();
+
+                    cursorimgpath.Add(scalarValue.ToString().Trim());
+                }
+            }
+
+            MouseCursor.ImageLocation = cursorimgpath[(int)Items_List.Minigun];
+            MouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
+
+
         }
 
 
@@ -136,9 +160,6 @@ namespace BreakDesktopClient
             pictureBox1.ImageLocation = "x2.jpg"; // picture box에 보여줌
 
 
-            
-            MouseCursor.ImageLocation = "curcor/minigun.png";
-            MouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
 
 
         }
@@ -276,7 +297,7 @@ namespace BreakDesktopClient
         {
             if (e.KeyCode == Keys.D1)
             {
-                MouseCursor.ImageLocation = "curcor/minigun.png";
+                MouseCursor.ImageLocation = cursorimgpath[(int)Items_List.Minigun];
                 itemSelecter.select = (int)Items_List.Stemp;
             }
             else if (e.KeyCode == Keys.D2)
@@ -287,7 +308,7 @@ namespace BreakDesktopClient
             else if (e.KeyCode == Keys.D3)
             {
 
-                MouseCursor.ImageLocation = "curcor/human.jpg";
+                MouseCursor.ImageLocation = cursorimgpath[(int)Items_List.Ladder];
 
                 itemSelecter.select = (int)Items_List.Ladder;
                 pictureBox1.Controls.Add(ladder);
@@ -327,7 +348,7 @@ namespace BreakDesktopClient
                         }
                         catch(Exception e)
                         {
-                            Console.WriteLine(e);
+                            MessageBox.Show(e.ToString());
                         }
 
 
