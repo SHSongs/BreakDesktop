@@ -25,3 +25,8 @@
 사다리 추가
 
 ![ladder](ladder.png)   
+
+### 7.15  
+유저관리를 할 수 있는 GameManagement 솔루션 추가  
+
+![GameManagement](log.png)   
